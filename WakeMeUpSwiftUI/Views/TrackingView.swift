@@ -108,11 +108,25 @@ struct TrackingView: View {
             Text("\(location.name) konumuna \(location.radius)m mesafedesiniz.")
         }
         .onAppear {
+            setupAudioSession()
             notificationManager.requestPermission()
             startTracking()
         }
         .onDisappear {
             stopTracking()
+        }
+    }
+    
+    private func setupAudioSession() {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(
+                .playback,
+                mode: .default,
+                options: []
+            )
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch {
+            print("Audio session error: \(error)")
         }
     }
     
@@ -144,7 +158,6 @@ struct TrackingView: View {
         locationManager.startUpdatingLocation()
         isTracking = true
         
-        // Haritayı kullanıcı ve hedef arasında konumlandır
         if let userLocation = locationManager.userLocation {
             let targetCoordinate = CLLocationCoordinate2D(
                 latitude: location.latitude,
@@ -160,7 +173,6 @@ struct TrackingView: View {
             ))
         }
         
-        // Timer ile mesafe güncelleme
         Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { timer in
             guard isTracking else {
                 timer.invalidate()
@@ -193,6 +205,33 @@ struct TrackingView: View {
         }
     }
     
+    private func vibratePhone() {
+        for i in 0..<5 {
+            DispatchQueue.main.asyncAfter(deadline: .now() + Double(i) * 0.5) {
+                AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+            }
+        }
+    }
+    
+    private func playAlarmSound() {
+        // Custom alarm sesi çal
+        guard let url = Bundle.main.url(forResource: "iphone_alarm", withExtension: "mp3") else {
+            print("Alarm sesi bulunamadı")
+            AudioServicesPlaySystemSound(1005) // Fallback
+            return
+        }
+        
+        do {
+            audioPlayer = try AVAudioPlayer(contentsOf: url)
+            audioPlayer?.numberOfLoops = -1 // Sürekli çal
+            audioPlayer?.volume = 1.0 // Maksimum ses
+            audioPlayer?.play()
+        } catch {
+            print("Ses çalma hatası: \(error)")
+            AudioServicesPlaySystemSound(1005) // Fallback
+        }
+    }
+    
     private func triggerAlarm() {
         notificationManager.sendAlarmNotification(
             locationName: location.name,
@@ -221,15 +260,16 @@ struct TrackingView: View {
         alarmTimer?.invalidate()
         alarmTimer = nil
         audioPlayer?.stop()
+        audioPlayer = nil
     }
     
-    private func playAlarmSound() {
-        AudioServicesPlaySystemSound(1005)
-    }
-    
-    private func vibratePhone() {
-        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
-    }
+//    private func playAlarmSound() {
+//        AudioServicesPlaySystemSound(1005)
+//    }
+//    
+//    private func vibratePhone() {
+//        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+//    }
     
     private func stopTracking() {
         isTracking = false

@@ -71,7 +71,7 @@ struct HomeView: View {
         List {
             ForEach(locations) { location in
                 NavigationLink {
-//                    TrackingView(location: location)
+                    TrackingView(location: location)
                 } label: {
                     LocationRow(location: location)
                 }

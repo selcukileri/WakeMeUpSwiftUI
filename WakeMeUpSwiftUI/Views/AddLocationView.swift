@@ -30,7 +30,6 @@ struct AddLocationView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                // Tam ekran harita
                 MapReader { proxy in
                     Map(position: $cameraPosition) {
                         if let coordinate = selectedCoordinate {
@@ -51,16 +50,23 @@ struct AddLocationView: View {
                         }
                     }
                     .gesture(
-                        SpatialTapGesture().onEnded { value in
-                            if let coord = proxy.convert(value.location, from: .local) {
-                                selectedCoordinate = coord
+                        LongPressGesture(minimumDuration: 0.3)
+                            .sequenced(before: DragGesture(minimumDistance: 0))
+                            .onEnded { value in
+                                switch value {
+                                case .second(true, let drag):
+                                    if let location = drag?.location,
+                                       let coordinate = proxy.convert(location, from: .local) {
+                                        selectedCoordinate = coordinate
+                                    }
+                                default:
+                                    break
+                                }
                             }
-                        }
                     )
                 }
                 .ignoresSafeArea()
                 
-                // Üst kısım - Search bar
                 VStack {
                     HStack(spacing: 12) {
                         Button {
@@ -262,7 +268,8 @@ struct AddLocationView: View {
         
         search.start { response, error in
             guard let mapItem = response?.mapItems.first else { return }
-            let coordinate = mapItem.location.coordinate
+            let coordinate = mapItem.placemark.coordinate
+            
             selectedCoordinate = coordinate
             name = result.title
             

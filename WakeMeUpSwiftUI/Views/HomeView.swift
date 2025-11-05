@@ -71,7 +71,7 @@ struct HomeView: View {
         List {
             ForEach(locations) { location in
                 NavigationLink {
-                    TrackingView(location: location)
+//                    TrackingView(location: location)
                 } label: {
                     LocationRow(location: location)
                 }
@@ -99,10 +99,6 @@ struct LocationRow: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(location.name)
                     .font(.headline)
-                
-                Text(location.subtitle)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
             }
             
             Spacer()

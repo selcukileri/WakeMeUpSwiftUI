@@ -12,18 +12,16 @@ import SwiftData
 class Location {
     var id: UUID
     var name: String
-    var subtitle: String
     var latitude: Double
     var longitude: Double
     var radius: Int
     var alarmType: AlarmType
     var createdAt: Date
     
-    init(name: String, subtitle: String, latitude: Double, longitude: Double,
+    init(name: String, latitude: Double, longitude: Double,
          radius: Int = 500, alarmType: AlarmType = .alarm) {
         self.id = UUID()
         self.name = name
-        self.subtitle = subtitle
         self.latitude = latitude
         self.longitude = longitude
         self.radius = radius

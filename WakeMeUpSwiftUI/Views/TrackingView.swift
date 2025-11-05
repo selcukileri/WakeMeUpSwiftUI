@@ -28,59 +28,10 @@ struct TrackingView: View {
     
     var body: some View {
         ZStack {
-            // Harita
-            Map(position: $cameraPosition) {
-                // Hedef konum
-                Annotation(location.name, coordinate: CLLocationCoordinate2D(
-                    latitude: location.latitude,
-                    longitude: location.longitude
-                )) {
-                    ZStack {
-                        Circle()
-                            .fill(.red.opacity(0.2))
-                            .frame(width: 60, height: 60)
-                        
-                        Image(systemName: "mappin.circle.fill")
-                            .font(.system(size: 40))
-                            .foregroundStyle(.red)
-                    }
-                }
-                
-                // Kullanıcı konumu
-                if let userLocation = locationManager.userLocation {
-                    Annotation("Siz", coordinate: userLocation) {
-                        Circle()
-                            .fill(.blue)
-                            .frame(width: 20, height: 20)
-                            .overlay(
-                                Circle()
-                                    .stroke(.white, lineWidth: 3)
-                            )
-                    }
-                }
-            }
-            .ignoresSafeArea()
-            
-            // Üst kısım - Mesafe göstergesi
-            VStack {
-                distanceCard
-                    .padding()
-                
-                Spacer()
-                
-                // Alt kısım - Durdur butonu
-                Button {
-                    stopTracking()
-                } label: {
-                    Text("Durdur")
-                        .font(.headline)
-                        .foregroundStyle(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(.red)
-                        .cornerRadius(12)
-                }
-                .padding()
+            if !locationManager.hasLocationPermission || !locationManager.locationServicesEnabled {
+                permissionErrorView
+            } else {
+                mapView
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -101,19 +52,108 @@ struct TrackingView: View {
                 stopAlarm()
                 stopTracking()
             }
-//            Button("Devam Et", role: .cancel) {
-//                stopAlarm()
-//            }
+            Button("Devam Et", role: .cancel) {
+                stopAlarm()
+            }
         } message: {
             Text("\(location.name) konumuna \(location.radius)m mesafedesiniz.")
         }
         .onAppear {
-            setupAudioSession()
-            notificationManager.requestPermission()
-            startTracking()
+            if locationManager.hasLocationPermission && locationManager.locationServicesEnabled {
+                setupAudioSession()
+                notificationManager.requestPermission()
+                startTracking()
+            }
         }
         .onDisappear {
             stopTracking()
+        }
+    }
+    
+    private var permissionErrorView: some View {
+        VStack(spacing: 20) {
+            Image(systemName: locationManager.locationServicesEnabled ? "location.slash" : "exclamationmark.triangle")
+                .font(.system(size: 60))
+                .foregroundStyle(.orange)
+            
+            Text(locationManager.locationServicesEnabled ? "Konum İzni Gerekli" : "GPS Kapalı")
+                .font(.title2)
+                .fontWeight(.semibold)
+            
+            Text(locationManager.locationServicesEnabled ?
+                 "Alarm çalabilmesi için konum izni vermelisiniz" :
+                 "Konum servislerini açmanız gerekiyor")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 40)
+            
+            Button {
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(url)
+                }
+            } label: {
+                Text("Ayarları Aç")
+                    .font(.headline)
+                    .padding()
+                    .background(Color.orange)
+                    .foregroundStyle(.white)
+                    .cornerRadius(12)
+            }
+        }
+    }
+    
+    private var mapView: some View {
+        ZStack {
+            Map(position: $cameraPosition) {
+                Annotation(location.name, coordinate: CLLocationCoordinate2D(
+                    latitude: location.latitude,
+                    longitude: location.longitude
+                )) {
+                    ZStack {
+                        Circle()
+                            .fill(.red.opacity(0.2))
+                            .frame(width: 60, height: 60)
+                        
+                        Image(systemName: "mappin.circle.fill")
+                            .font(.system(size: 40))
+                            .foregroundStyle(.red)
+                    }
+                }
+                
+                if let userLocation = locationManager.userLocation {
+                    Annotation("Siz", coordinate: userLocation) {
+                        Circle()
+                            .fill(.blue)
+                            .frame(width: 20, height: 20)
+                            .overlay(
+                                Circle()
+                                    .stroke(.white, lineWidth: 3)
+                            )
+                    }
+                }
+            }
+            .ignoresSafeArea()
+            
+            VStack {
+                distanceCard
+                    .padding()
+                
+                Spacer()
+                
+                Button {
+                    stopTracking()
+                } label: {
+                    Text("Durdur")
+                        .font(.headline)
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(.red)
+                        .cornerRadius(12)
+                }
+                .padding()
+            }
         }
     }
     
@@ -198,7 +238,6 @@ struct TrackingView: View {
         
         remainingDistance = userCLLocation.distance(from: targetLocation)
         
-        // Alarm kontrolü
         if remainingDistance <= Double(location.radius) && !hasTriggeredAlarm {
             triggerAlarm()
             hasTriggeredAlarm = true
@@ -214,21 +253,20 @@ struct TrackingView: View {
     }
     
     private func playAlarmSound() {
-        // Custom alarm sesi çal
         guard let url = Bundle.main.url(forResource: "iphone_alarm", withExtension: "mp3") else {
             print("Alarm sesi bulunamadı")
-            AudioServicesPlaySystemSound(1005) // Fallback
+            AudioServicesPlaySystemSound(1005)
             return
         }
         
         do {
             audioPlayer = try AVAudioPlayer(contentsOf: url)
-            audioPlayer?.numberOfLoops = -1 // Sürekli çal
-            audioPlayer?.volume = 1.0 // Maksimum ses
+            audioPlayer?.numberOfLoops = -1
+            audioPlayer?.volume = 1.0
             audioPlayer?.play()
         } catch {
             print("Ses çalma hatası: \(error)")
-            AudioServicesPlaySystemSound(1005) // Fallback
+            AudioServicesPlaySystemSound(1005)
         }
     }
     
@@ -262,14 +300,6 @@ struct TrackingView: View {
         audioPlayer?.stop()
         audioPlayer = nil
     }
-    
-//    private func playAlarmSound() {
-//        AudioServicesPlaySystemSound(1005)
-//    }
-//    
-//    private func vibratePhone() {
-//        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
-//    }
     
     private func stopTracking() {
         isTracking = false

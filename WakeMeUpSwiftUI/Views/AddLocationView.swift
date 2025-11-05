@@ -106,7 +106,6 @@ struct AddLocationView: View {
                     Spacer()
                 }
                 
-                // Alt kısım - Name + Ayarlar
                 VStack {
                     Spacer()
                     

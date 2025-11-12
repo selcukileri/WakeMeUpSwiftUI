@@ -26,24 +26,31 @@ class LocationManager: NSObject {
         locationManager.pausesLocationUpdatesAutomatically = false
         
         authorizationStatus = locationManager.authorizationStatus
-        DispatchQueue.main.async {
-            self.locationServicesEnabled = CLLocationManager.locationServicesEnabled()
-        }
-        
+        checkLocationServicesEnabled()
         
         locationManager.requestWhenInUseAuthorization()
     }
     
-    func startUpdatingLocation() {
-        guard CLLocationManager.locationServicesEnabled() else {
-            DispatchQueue.main.async {
-                self.locationServicesEnabled = false
+    private func checkLocationServicesEnabled() {
+        Task {
+            let enabled = CLLocationManager.locationServicesEnabled()
+            await MainActor.run {
+                self.locationServicesEnabled = enabled
             }
-            return
         }
-        locationManager.startUpdatingLocation()
-        DispatchQueue.main.async {
-            self.isUpdatingLocation = true
+    }
+    
+    func startUpdatingLocation() {
+        Task {
+            let enabled = CLLocationManager.locationServicesEnabled()
+            await MainActor.run {
+                guard enabled else {
+                    self.locationServicesEnabled = false
+                    return
+                }
+                self.locationManager.startUpdatingLocation()
+                self.isUpdatingLocation = true
+            }
         }
     }
     
@@ -79,9 +86,13 @@ extension LocationManager: CLLocationManagerDelegate {
     }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        DispatchQueue.main.async {
-            self.authorizationStatus = manager.authorizationStatus
-            self.locationServicesEnabled = CLLocationManager.locationServicesEnabled()
+        let status = manager.authorizationStatus
+        Task {
+            let enabled = CLLocationManager.locationServicesEnabled()
+            await MainActor.run {
+                self.authorizationStatus = status
+                self.locationServicesEnabled = enabled
+            }
         }
     }
     

@@ -17,6 +17,8 @@ struct TrackingView: View {
     @State private var alarmTimer: Timer?
     @State private var showingAlarmAlert = false
     
+    @State private var initialSpan: MKCoordinateSpan?
+    
     @State private var locationManager = LocationManager()
     @State private var notificationManager = NotificationManager()
 
@@ -35,6 +37,7 @@ struct TrackingView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+        .toolbar(.hidden, for: .tabBar)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
@@ -193,7 +196,7 @@ struct TrackingView: View {
         .background(.ultraThinMaterial)
         .cornerRadius(16)
     }
-    
+
     private func startTracking() {
         locationManager.startUpdatingLocation()
         isTracking = true
@@ -207,9 +210,12 @@ struct TrackingView: View {
             let midLat = (userLocation.latitude + targetCoordinate.latitude) / 2
             let midLon = (userLocation.longitude + targetCoordinate.longitude) / 2
             
+            let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+            initialSpan = span // İlk zoom'u kaydet
+            
             cameraPosition = .region(MKCoordinateRegion(
                 center: CLLocationCoordinate2D(latitude: midLat, longitude: midLon),
-                span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+                span: span
             ))
         }
         
@@ -220,9 +226,27 @@ struct TrackingView: View {
             }
             
             updateDistance()
+            updateCameraPosition()
         }
     }
-    
+
+    private func updateCameraPosition() {
+        guard let userLocation = locationManager.userLocation,
+              let span = initialSpan else { return }
+        
+        let targetCoordinate = CLLocationCoordinate2D(
+            latitude: location.latitude,
+            longitude: location.longitude
+        )
+        
+        let midLat = (userLocation.latitude + targetCoordinate.latitude) / 2
+        let midLon = (userLocation.longitude + targetCoordinate.longitude) / 2
+        
+        cameraPosition = .region(MKCoordinateRegion(
+            center: CLLocationCoordinate2D(latitude: midLat, longitude: midLon),
+            span: span 
+        ))
+    }
     private func updateDistance() {
         guard let userLocation = locationManager.userLocation else { return }
         

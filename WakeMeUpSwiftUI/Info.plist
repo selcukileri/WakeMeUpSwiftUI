@@ -7,5 +7,8 @@
 		<string>location</string>
 		<string>audio</string>
 	</array>
+    <key>CFBundleIconName</key>
+    <string>AppIcon</string>
 </dict>
+
 </plist>

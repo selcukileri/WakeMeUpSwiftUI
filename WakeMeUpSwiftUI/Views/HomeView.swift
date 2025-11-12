@@ -89,6 +89,7 @@ struct HomeView: View {
 
 struct LocationRow: View {
     let location: Location
+    @Environment(\.modelContext) private var modelContext
     
     var body: some View {
         HStack {
@@ -102,6 +103,15 @@ struct LocationRow: View {
             }
             
             Spacer()
+            
+            Button {
+                location.isFavorite.toggle()
+            } label: {
+                Image(systemName: location.isFavorite ? "star.fill" : "star")
+                    .foregroundStyle(location.isFavorite ? .yellow : .gray)
+                    .font(.title3)
+            }
+            .buttonStyle(.plain)
             
             VStack(alignment: .trailing, spacing: 4) {
                 Text("\(location.radius)m")

@@ -238,6 +238,9 @@ struct TrackingView: View {
         
         remainingDistance = userCLLocation.distance(from: targetLocation)
         
+        print("📍 Mesafe güncellendi: \(Int(remainingDistance))m - \(Date().formatted(date: .omitted, time: .standard))")
+
+        
         if remainingDistance <= Double(location.radius) && !hasTriggeredAlarm {
             triggerAlarm()
             hasTriggeredAlarm = true

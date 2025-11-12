@@ -17,9 +17,10 @@ class Location {
     var radius: Int
     var alarmType: AlarmType
     var createdAt: Date
+    var isFavorite: Bool
     
     init(name: String, latitude: Double, longitude: Double,
-         radius: Int = 500, alarmType: AlarmType = .alarm) {
+         radius: Int = 500, alarmType: AlarmType = .alarm, isFavorite: Bool = false) {
         self.id = UUID()
         self.name = name
         self.latitude = latitude
@@ -27,5 +28,6 @@ class Location {
         self.radius = radius
         self.alarmType = alarmType
         self.createdAt = Date()
+        self.isFavorite = isFavorite
     }
 }

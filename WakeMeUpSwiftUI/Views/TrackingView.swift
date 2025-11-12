@@ -165,7 +165,7 @@ struct TrackingView: View {
             try AVAudioSession.sharedInstance().setCategory(
                 .playback,
                 mode: .default,
-                options: []
+                options: [.duckOthers, .interruptSpokenAudioAndMixWithOthers]
             )
             try AVAudioSession.sharedInstance().setActive(true)
         } catch {
@@ -280,6 +280,13 @@ struct TrackingView: View {
     }
     
     private func playAlarmSound() {
+        
+        do {
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch {
+            print("Audio activation error: \(error)")
+        }
+        
         guard let url = Bundle.main.url(forResource: "iphone_alarm", withExtension: "mp3") else {
             print("Alarm sesi bulunamadı")
             AudioServicesPlaySystemSound(1005)

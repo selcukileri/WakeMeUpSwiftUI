@@ -20,6 +20,11 @@ struct ContentView: View {
                 .tabItem {
                     Label("Favoriler", systemImage: "star.fill")
                 }
+            
+            SettingsView()
+                .tabItem {
+                    Label("Ayarlar", systemImage: "gearshape.fill")
+                }
         }
     }
 }

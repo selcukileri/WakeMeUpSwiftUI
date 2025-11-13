@@ -104,7 +104,7 @@ struct SettingsView: View {
                     .font(.title2)
                     .fontWeight(.bold)
                 
-                Text("Son Güncelleme: 13 Kasım 2024")
+                Text("Son Güncelleme: 13 Kasım 2025")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 
@@ -145,7 +145,7 @@ struct SettingsView: View {
                     .font(.title2)
                     .fontWeight(.bold)
                 
-                Text("Son Güncelleme: 13 Kasım 2024")
+                Text("Son Güncelleme: 13 Kasım 2025")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 

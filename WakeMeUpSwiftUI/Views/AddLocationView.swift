@@ -227,6 +227,12 @@ struct AddLocationView: View {
                 Text(alertMessage)
             }
             .onAppear {
+                if !locationManager.hasLocationPermission {
+                    showAlert = true
+                    alertMessage = "Konum izni olmadan harita kullanılamaz. Lütfen ayarlardan izin verin."
+                    return
+                }
+                
                 locationManager.startUpdatingLocation()
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {

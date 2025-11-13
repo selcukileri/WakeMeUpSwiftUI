@@ -17,6 +17,9 @@ struct TrackingView: View {
     @State private var alarmTimer: Timer?
     @State private var showingAlarmAlert = false
     
+    @State private var snoozeCountdown: Int? = nil
+    @State private var snoozeTimer: Timer?
+    
     @State private var initialSpan: MKCoordinateSpan?
     
     @State private var locationManager = LocationManager()
@@ -55,8 +58,9 @@ struct TrackingView: View {
                 stopAlarm()
                 stopTracking()
             }
-            Button("Devam Et", role: .cancel) {
+            Button("1 Dakika Sonra Tekrar Çal", role: .cancel) {
                 stopAlarm()
+                startSnooze()
             }
         } message: {
             Text("\(location.name) konumuna \(location.radius)m mesafedesiniz.")
@@ -139,6 +143,20 @@ struct TrackingView: View {
             .ignoresSafeArea()
             
             VStack {
+                if let countdown = snoozeCountdown {
+                    HStack(spacing: 8) {
+                        Image(systemName: "clock.fill")
+                            .foregroundStyle(.orange)
+                        Text("Tekrar alarm: \(countdown)s")
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                    }
+                    .padding()
+                    .background(.orange.opacity(0.2))
+                    .cornerRadius(12)
+                    .padding(.horizontal)
+                    .transition(.move(edge: .top).combined(with: .opacity))
+                }
                 distanceCard
                     .padding()
                 
@@ -170,6 +188,27 @@ struct TrackingView: View {
             try AVAudioSession.sharedInstance().setActive(true)
         } catch {
             print("Audio session error: \(error)")
+        }
+    }
+    
+    private func startSnooze() {
+        withAnimation {
+            snoozeCountdown = 60
+        }
+        
+        snoozeTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+            if let countdown = snoozeCountdown {
+                if countdown > 0 {
+                    snoozeCountdown = countdown - 1
+                } else {
+                    timer.invalidate()
+                    snoozeTimer = nil
+                    withAnimation {
+                        snoozeCountdown = nil
+                    }
+                    triggerAlarm()
+                }
+            }
         }
     }
     
@@ -338,6 +377,9 @@ struct TrackingView: View {
     private func stopTracking() {
         isTracking = false
         stopAlarm()
+        snoozeTimer?.invalidate()
+        snoozeTimer = nil
+        snoozeCountdown = nil
         locationManager.stopUpdatingLocation()
         dismiss()
     }

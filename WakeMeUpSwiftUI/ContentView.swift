@@ -9,27 +9,48 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
+    @State private var showingAddLocation = false
+    
     var body: some View {
-        TabView {
-            HomeView()
-                .tabItem {
-                    Label("Konumlar", systemImage: "mappin.circle")
-                }
+        ZStack {
+            TabView {
+                HomeView()
+                    .tabItem {
+                        Label("Konumlar", systemImage: "mappin.circle")
+                    }
+                
+                FavoritesView()
+                    .tabItem {
+                        Label("Favoriler", systemImage: "star.fill")
+                    }
+                
+                SettingsView()
+                    .tabItem {
+                        Label("Ayarlar", systemImage: "gearshape.fill")
+                    }
+            }
             
-            FavoritesView()
-                .tabItem {
-                    Label("Favoriler", systemImage: "star.fill")
+            VStack {
+                Spacer()
+                HStack {
+                    Spacer()
+                    Button(action: { showingAddLocation = true }) {
+                        Image(systemName: "plus")
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.white)
+                            .frame(width: 56, height: 56)
+                            .background(Color.blue)
+                            .clipShape(Circle())
+                            .shadow(color: .black.opacity(0.2), radius: 5)
+                    }
+                    .padding(.trailing, 20)
+                    .padding(.bottom, 90) 
                 }
-            
-            SettingsView()
-                .tabItem {
-                    Label("Ayarlar", systemImage: "gearshape.fill")
-                }
+            }
+        }
+        .sheet(isPresented: $showingAddLocation) {
+            Text("Yeni Alarm")
         }
     }
-}
-
-#Preview {
-    ContentView()
-        .modelContainer(for: Location.self, inMemory: true)
 }

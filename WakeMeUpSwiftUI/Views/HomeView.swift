@@ -23,18 +23,18 @@ struct HomeView: View {
                 }
             }
             .navigationTitle("Wake Me Up")
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        showingAddLocation = true
-                    } label: {
-                        Image(systemName: "plus")
-                    }
-                }
-            }
-            .sheet(isPresented: $showingAddLocation) {
-                AddLocationView()
-            }
+//            .toolbar {
+//                ToolbarItem(placement: .topBarTrailing) {
+//                    Button {
+//                        showingAddLocation = true
+//                    } label: {
+//                        Image(systemName: "plus")
+//                    }
+//                }
+//            }
+//            .sheet(isPresented: $showingAddLocation) {
+//                AddLocationView()
+//            }
         }
     }
     

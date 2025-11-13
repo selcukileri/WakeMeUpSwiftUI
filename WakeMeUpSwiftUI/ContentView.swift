@@ -45,7 +45,7 @@ struct ContentView: View {
                             .shadow(color: .black.opacity(0.2), radius: 5)
                     }
                     .padding(.trailing, 20)
-                    .padding(.bottom, 90) 
+                    .padding(.bottom, 70) 
                 }
             }
         }

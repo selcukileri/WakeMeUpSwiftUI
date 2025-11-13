@@ -22,7 +22,7 @@ struct EditLocationView: View {
     @State private var showAlert = false
     @State private var alertMessage = ""
     
-    let radiusOptions = [300, 500, 750, 1000]
+    let radiusOptions = [500, 1000, 1500, 2000]
     
     init(location: Location) {
         self.location = location

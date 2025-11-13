@@ -53,17 +53,6 @@ struct HomeView: View {
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
-            
-            Button {
-                showingAddLocation = true
-            } label: {
-                Label("Konum Ekle", systemImage: "plus.circle.fill")
-                    .font(.headline)
-                    .padding()
-                    .background(Color.blue)
-                    .foregroundStyle(.white)
-                    .cornerRadius(12)
-            }
         }
     }
     

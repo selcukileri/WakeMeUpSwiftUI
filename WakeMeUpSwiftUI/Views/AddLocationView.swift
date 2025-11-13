@@ -15,6 +15,7 @@ struct AddLocationView: View {
     @State private var locationManager = LocationManager()
     @State private var searchService = LocationSearchService()
     
+    @State private var showHint = true
     @State private var showingSearch = false
     @State private var name = ""
     @State private var selectedCoordinate: CLLocationCoordinate2D?
@@ -58,6 +59,9 @@ struct AddLocationView: View {
                                     if let location = drag?.location,
                                        let coordinate = proxy.convert(location, from: .local) {
                                         selectedCoordinate = coordinate
+                                        withAnimation {
+                                            showHint = false
+                                        }
                                     }
                                 default:
                                     break
@@ -102,6 +106,22 @@ struct AddLocationView: View {
                     }
                     .padding(.horizontal)
                     .padding(.top, 8)
+                    
+                    if selectedCoordinate == nil && showHint {
+                        HStack(spacing: 8) {
+                            Image(systemName: "hand.tap.fill")
+                                .foregroundStyle(.blue)
+                            Text("Haritayı basılı tutarak konum seçin")
+                                .font(.caption)
+                                .foregroundStyle(.primary)
+                        }
+                        .padding()
+                        .background(.blue.opacity(0.1))
+                        .cornerRadius(12)
+                        .padding(.horizontal)
+                        .padding(.top, 4)
+                        .transition(.move(edge: .top).combined(with: .opacity))
+                    }
                     
                     Spacer()
                 }
@@ -267,6 +287,7 @@ struct AddLocationView: View {
             
             selectedCoordinate = coordinate
             name = result.title
+            showHint = false
             
             cameraPosition = .region(MKCoordinateRegion(
                 center: coordinate,

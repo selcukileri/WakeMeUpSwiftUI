@@ -50,7 +50,7 @@ struct ContentView: View {
             }
         }
         .sheet(isPresented: $showingAddLocation) {
-            Text("Yeni Alarm")
+            AddLocationView()
         }
     }
 }

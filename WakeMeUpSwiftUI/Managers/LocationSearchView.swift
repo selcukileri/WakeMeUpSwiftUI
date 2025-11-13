@@ -17,11 +17,17 @@ class LocationSearchService: NSObject, MKLocalSearchCompleterDelegate {
     override init() {
         super.init()
         completer.delegate = self
-        completer.resultTypes = .address
+        completer.resultTypes = [.address, .pointOfInterest]
     }
     
     func updateSearch(_ query: String) {
         searchQuery = query
+        
+        if query.isEmpty {
+            searchResults = []
+            return
+        }
+        
         completer.queryFragment = query
     }
     

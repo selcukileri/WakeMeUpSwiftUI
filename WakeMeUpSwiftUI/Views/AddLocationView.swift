@@ -25,7 +25,7 @@ struct AddLocationView: View {
     @State private var alertMessage = ""
     @State private var showSettings = false
     
-    let radiusOptions = [300, 500, 750, 1000]
+    let radiusOptions = [500, 1000, 1500, 2000]
     
     var body: some View {
         NavigationStack {

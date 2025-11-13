@@ -26,31 +26,16 @@ class LocationManager: NSObject {
         locationManager.pausesLocationUpdatesAutomatically = false
         
         authorizationStatus = locationManager.authorizationStatus
-        checkLocationServicesEnabled()
         
         locationManager.requestWhenInUseAuthorization()
     }
     
-    private func checkLocationServicesEnabled() {
-        Task {
-            let enabled = CLLocationManager.locationServicesEnabled()
-            await MainActor.run {
-                self.locationServicesEnabled = enabled
-            }
-        }
-    }
-    
     func startUpdatingLocation() {
-        Task {
-            let enabled = CLLocationManager.locationServicesEnabled()
-            await MainActor.run {
-                guard enabled else {
-                    self.locationServicesEnabled = false
-                    return
-                }
-                self.locationManager.startUpdatingLocation()
-                self.isUpdatingLocation = true
-            }
+        guard hasLocationPermission else { return }
+        
+        locationManager.startUpdatingLocation()
+        DispatchQueue.main.async {
+            self.isUpdatingLocation = true
         }
     }
     
@@ -87,11 +72,14 @@ extension LocationManager: CLLocationManagerDelegate {
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         let status = manager.authorizationStatus
-        Task {
-            let enabled = CLLocationManager.locationServicesEnabled()
-            await MainActor.run {
-                self.authorizationStatus = status
-                self.locationServicesEnabled = enabled
+        
+        DispatchQueue.main.async {
+            self.authorizationStatus = status
+            
+            if status == .authorizedWhenInUse || status == .authorizedAlways {
+                self.locationServicesEnabled = CLLocationManager.locationServicesEnabled()
+            } else {
+                self.locationServicesEnabled = false
             }
         }
     }

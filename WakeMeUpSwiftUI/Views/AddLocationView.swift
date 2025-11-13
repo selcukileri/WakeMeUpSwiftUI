@@ -118,32 +118,59 @@ struct AddLocationView: View {
                             .cornerRadius(12)
                             .padding(.horizontal)
                         
-                        Button {
-                            showSettings = true
-                        } label: {
-                            HStack(spacing: 16) {
-                                Label("\(selectedRadius)m", systemImage: "scope")
-                                    .font(.subheadline)
-                                
-                                Divider()
-                                    .frame(height: 20)
-                                
-                                Label(selectedAlarmType.rawValue, systemImage: "bell.fill")
-                                    .font(.subheadline)
-                                
-                                Spacer()
-                                
-                                Image(systemName: "chevron.right")
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
+                        VStack(alignment: .leading, spacing: 8) {
+                            Label("Mesafe", systemImage: "scope")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                            
+                            Picker("Mesafe", selection: $selectedRadius) {
+                                ForEach(radiusOptions, id: \.self) { radius in
+                                    Text("\(radius)m").tag(radius)
+                                }
                             }
-                            .foregroundStyle(.primary)
-                            .padding()
-                            .background(.ultraThinMaterial)
-                            .cornerRadius(12)
-                            .padding(.horizontal)
+                            .pickerStyle(.segmented)
                         }
-                        .buttonStyle(.plain)
+                        .padding()
+                        .background(.ultraThinMaterial)
+                        .cornerRadius(12)
+                        .padding(.horizontal)
+                        
+                        VStack(alignment: .leading, spacing: 8) {
+                            Label("Alarm Tipi", systemImage: "bell.fill")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                            
+                            HStack(spacing: 12) {
+                                ForEach(AlarmType.allCases, id: \.self) { type in
+                                    Button {
+                                        selectedAlarmType = type
+                                    } label: {
+                                        VStack(spacing: 8) {
+                                            Image(systemName: type == .alarm ? "speaker.wave.2" :
+                                                               type == .vibration ? "iphone.radiowaves.left.and.right" :
+                                                               "bell.and.waves.left.and.right")
+                                                .font(.title2)
+                                            
+                                            Text(type.rawValue)
+                                                .font(.caption)
+                                        }
+                                        .frame(maxWidth: .infinity)
+                                        .padding(.vertical, 12)
+                                        .background(selectedAlarmType == type ? Color.blue : Color.clear)
+                                        .foregroundStyle(selectedAlarmType == type ? .white : .primary)
+                                        .cornerRadius(8)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 8)
+                                                .stroke(selectedAlarmType == type ? Color.clear : Color.gray.opacity(0.3), lineWidth: 1)
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                        .padding()
+                        .background(.ultraThinMaterial)
+                        .cornerRadius(12)
+                        .padding(.horizontal)
                     }
                     .padding(.bottom, 20)
                     .background(
@@ -173,37 +200,6 @@ struct AddLocationView: View {
             }
             .sheet(isPresented: $showingSearch) {
                 searchView
-            }
-            .sheet(isPresented: $showSettings) {
-                NavigationStack {
-                    Form {
-                        Section {
-                            Picker("Mesafe", selection: $selectedRadius) {
-                                ForEach(radiusOptions, id: \.self) { radius in
-                                    Text("\(radius)m").tag(radius)
-                                }
-                            }
-                            .pickerStyle(.inline)
-                            
-                            Picker("Alarm Tipi", selection: $selectedAlarmType) {
-                                ForEach(AlarmType.allCases, id: \.self) { type in
-                                    Text(type.rawValue).tag(type)
-                                }
-                            }
-                            .pickerStyle(.inline)
-                        }
-                    }
-                    .navigationTitle("Alarm Ayarları")
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbar {
-                        ToolbarItem(placement: .confirmationAction) {
-                            Button("Tamam") {
-                                showSettings = false
-                            }
-                        }
-                    }
-                }
-                .presentationDetents([.medium])
             }
             .alert("Uyarı", isPresented: $showAlert) {
                 Button("Tamam", role: .cancel) { }

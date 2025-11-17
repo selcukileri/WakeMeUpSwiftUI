@@ -10,49 +10,30 @@ import SwiftData
 
 struct ContentView: View {
     @State private var showingAddLocation = false
+    @State private var selectedTab = 0
     
     var body: some View {
         ZStack {
-            TabView {
+            TabView(selection: $selectedTab) {
                 HomeView()
                     .tabItem {
                         Label("Konumlar", systemImage: "mappin.circle")
                     }
+                    .tag(0)
                 
                 FavoritesView()
                     .tabItem {
                         Label("Favoriler", systemImage: "star.fill")
                     }
+                    .tag(1)
                 
                 SettingsView()
                     .tabItem {
                         Label("Ayarlar", systemImage: "gearshape.fill")
                     }
+                    .tag(2)
             }
-            
             .tint(.appOrange)
-            
-            VStack {
-                Spacer()
-                HStack {
-                    Spacer()
-                    Button(action: { showingAddLocation = true }) {
-                        Image(systemName: "plus")
-                            .font(.title2)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.white)
-                            .frame(width: 56, height: 56)
-                            .background(Color.appOrange)
-                            .clipShape(Circle())
-                            .shadow(color: .black.opacity(0.2), radius: 5)
-                    }
-                    .padding(.trailing, 20)
-                    .padding(.bottom, 70) 
-                }
-            }
-        }
-        .sheet(isPresented: $showingAddLocation) {
-            AddLocationView()
         }
     }
 }

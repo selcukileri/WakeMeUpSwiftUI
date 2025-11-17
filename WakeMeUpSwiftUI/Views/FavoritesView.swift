@@ -27,6 +27,27 @@ struct FavoritesView: View {
                 }
             }
             .navigationTitle("Favoriler")
+            VStack {
+                Spacer()
+                HStack {
+                    Spacer()
+                    Button(action: { showingAddLocation = true }) {
+                        Image(systemName: "plus")
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.white)
+                            .frame(width: 56, height: 56)
+                            .background(Color.appOrange)
+                            .clipShape(Circle())
+                            .shadow(color: .black.opacity(0.2), radius: 5)
+                    }
+                    .padding(.trailing, 20)
+                    .padding(.bottom, 90)
+                }
+            }
+        }
+        .sheet(isPresented: $showingAddLocation) {
+            AddLocationView()
         }
     }
     

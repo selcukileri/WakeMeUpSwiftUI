@@ -15,26 +15,38 @@ struct HomeView: View {
     
     var body: some View {
         NavigationStack {
-            Group {
-                if locations.isEmpty {
-                    emptyStateView
-                } else {
-                    locationsList
+            ZStack {
+                Group {
+                    if locations.isEmpty {
+                        emptyStateView
+                    } else {
+                        locationsList
+                    }
+                }
+                .navigationTitle("Wake Me Up")
+                
+                VStack {
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        Button(action: { showingAddLocation = true }) {
+                            Image(systemName: "plus")
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.white)
+                                .frame(width: 56, height: 56)
+                                .background(Color.appOrange)
+                                .clipShape(Circle())
+                                .shadow(color: .black.opacity(0.2), radius: 5)
+                        }
+                        .padding(.trailing, 20)
+                        .padding(.bottom, 90)
+                    }
                 }
             }
-            .navigationTitle("Wake Me Up")
-//            .toolbar {
-//                ToolbarItem(placement: .topBarTrailing) {
-//                    Button {
-//                        showingAddLocation = true
-//                    } label: {
-//                        Image(systemName: "plus")
-//                    }
-//                }
-//            }
-//            .sheet(isPresented: $showingAddLocation) {
-//                AddLocationView()
-//            }
+            .sheet(isPresented: $showingAddLocation) {
+                AddLocationView()
+            }
         }
     }
     

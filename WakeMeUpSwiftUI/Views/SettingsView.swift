@@ -172,7 +172,6 @@ struct SettingsView: View {
                 
                 **Kullanım Önerileri:**
                 - Batarya seviyenizi kontrol edin
-                - Telefonunuzu sessiz modda tutmayın
                 - Kritik yolculuklarda telefonunuzun yerleşik alarmını da kurun
                 
                 **İletişim:**

@@ -46,15 +46,6 @@ struct SettingsView: View {
                         color: .red
                     )
                     
-                    .onAppear {
-                        notificationManager.checkPermissionStatus()
-                    }
-                    .onChange(of: scenePhase) { oldPhase, newPhase in
-                        if newPhase == .active {
-                            notificationManager.checkPermissionStatus()
-                        }
-                    }
-                    
                 } header: {
                     Text("İzinler")
                 } footer: {
@@ -89,24 +80,29 @@ struct SettingsView: View {
                     HStack {
                         Image(systemName: "envelope.fill")
                             .foregroundStyle(.gray)
-                        Text("Destek")
+                        Text("İletişim ve Önerileriniz İçin")
                         Spacer()
-                        Text("support@wakemeup.app")
+                        Text("wakemeup.contact@gmail.com")
                             .foregroundStyle(.secondary)
                             .font(.caption)
                     }
                     .onTapGesture {
-                        if let url = URL(string: "mailto:support@wakemeup.app") {
+                        if let url = URL(string: "mailto:wakemeup.contact@gmail.com") {
                             UIApplication.shared.open(url)
                         }
                     }
                 } header: {
-                    Text("İletişim")
+                    Text("Destek")
                 }
             }
             .navigationTitle("Ayarlar")
             .onAppear {
                 notificationManager.checkPermissionStatus()
+            }
+            .onChange(of: scenePhase) { oldPhase, newPhase in
+                if newPhase == .active {
+                    notificationManager.checkPermissionStatus()
+                }
             }
         }
     }
@@ -175,9 +171,9 @@ struct SettingsView: View {
                 Uygulama yalnızca yardımcı bir araçtır. Önemli yolculuklarda ek önlemler alınmalıdır. Alarm çalmazsa veya geç çalarsa sorumluluk kabul edilmez.
                 
                 **Kullanım Önerileri:**
-                • Telefonunuzun sesini açık tutun
-                • Batarya seviyenizi kontrol edin
-                • Kritik yolculuklarda ek alarm kurun
+                - Batarya seviyenizi kontrol edin
+                - Telefonunuzu sessiz modda tutmayın
+                - Kritik yolculuklarda telefonunuzun yerleşik alarmını da kurun
                 
                 **İletişim:**
                 Sorularınız için: support@wakemeup.app

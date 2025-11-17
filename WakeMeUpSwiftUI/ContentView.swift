@@ -30,7 +30,7 @@ struct ContentView: View {
                     }
             }
             
-            .tint(.appTeal)
+            .tint(.appOrange)
             
             VStack {
                 Spacer()
@@ -42,7 +42,7 @@ struct ContentView: View {
                             .fontWeight(.semibold)
                             .foregroundColor(.white)
                             .frame(width: 56, height: 56)
-                            .background(Color.appTeal)
+                            .background(Color.appOrange)
                             .clipShape(Circle())
                             .shadow(color: .black.opacity(0.2), radius: 5)
                     }

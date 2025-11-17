@@ -10,6 +10,7 @@ import SwiftUI
 struct SettingsView: View {
     @State private var notificationManager = NotificationManager()
     @State private var locationManager = LocationManager()
+    @Environment(\.scenePhase) private var scenePhase
     
     var body: some View {
         NavigationStack {
@@ -44,6 +45,16 @@ struct SettingsView: View {
                         isGranted: notificationManager.isAuthorized,
                         color: .red
                     )
+                    
+                    .onAppear {
+                        notificationManager.checkPermissionStatus()
+                    }
+                    .onChange(of: scenePhase) { oldPhase, newPhase in
+                        if newPhase == .active {
+                            notificationManager.checkPermissionStatus()
+                        }
+                    }
+                    
                 } header: {
                     Text("İzinler")
                 } footer: {
@@ -94,6 +105,9 @@ struct SettingsView: View {
                 }
             }
             .navigationTitle("Ayarlar")
+            .onAppear {
+                notificationManager.checkPermissionStatus()
+            }
         }
     }
     

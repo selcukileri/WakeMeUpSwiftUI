@@ -34,7 +34,7 @@ class NotificationManager {
         let request = UNNotificationRequest(
             identifier: UUID().uuidString,
             content: content,
-            trigger: nil // Hemen gönder
+            trigger: nil
         )
         
         UNUserNotificationCenter.current().add(request) { error in
@@ -48,6 +48,14 @@ class NotificationManager {
         UNUserNotificationCenter.current().getNotificationSettings { settings in
             DispatchQueue.main.async {
                 self.isAuthorized = settings.authorizationStatus == .authorized
+            }
+        }
+    }
+    
+    func checkPermission(completion: @escaping (Bool) -> Void) { 
+        UNUserNotificationCenter.current().getNotificationSettings { settings in
+            DispatchQueue.main.async {
+                completion(settings.authorizationStatus == .authorized)
             }
         }
     }

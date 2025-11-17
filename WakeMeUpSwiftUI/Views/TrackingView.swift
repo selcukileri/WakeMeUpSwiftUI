@@ -14,6 +14,8 @@ struct TrackingView: View {
     
     @Environment(\.dismiss) private var dismiss
     
+    @State private var showNotificationWarning = false
+
     @State private var alarmTimer: Timer?
     @State private var showingAlarmAlert = false
     
@@ -65,11 +67,31 @@ struct TrackingView: View {
         } message: {
             Text("\(location.name) konumuna \(location.radius)m mesafedesiniz.")
         }
+        
+        .alert("Bildirim İzni Yok", isPresented: $showNotificationWarning) {
+            Button("Ayarları Aç") {
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(url)
+                }
+            }
+            Button("Yine de Başlat", role: .cancel) {
+                startTracking()
+            }
+        } message: {
+            Text("Bildirim izni vermediniz. Uygulama arka planda çalışırken size uyarı gönderilemez. Yine de devam etmek istiyor musunuz?")
+        }
         .onAppear {
             if locationManager.hasLocationPermission && locationManager.locationServicesEnabled {
                 setupAudioSession()
                 notificationManager.requestPermission()
-                startTracking()
+                
+                notificationManager.checkPermission { granted in
+                    if !granted {
+                        showNotificationWarning = true
+                    } else {
+                        startTracking()
+                    }
+                }
             }
         }
         .onDisappear {
@@ -146,13 +168,13 @@ struct TrackingView: View {
                 if let countdown = snoozeCountdown {
                     HStack(spacing: 8) {
                         Image(systemName: "clock.fill")
-                            .foregroundStyle(.orange)
+                            .foregroundStyle(.appOrange)
                         Text("Tekrar alarm: \(countdown)s")
                             .font(.subheadline)
                             .fontWeight(.semibold)
                     }
                     .padding()
-                    .background(.orange.opacity(0.2))
+                    .background(.appOrange.opacity(0.2))
                     .cornerRadius(12)
                     .padding(.horizontal)
                     .transition(.move(edge: .top).combined(with: .opacity))

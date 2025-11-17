@@ -59,7 +59,7 @@ struct LocationDetailView: View {
                             .foregroundStyle(.white)
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(Color.appTeal)
+                            .background(Color.appOrange)
                             .cornerRadius(12)
                     }
                     
@@ -68,10 +68,10 @@ struct LocationDetailView: View {
                     } label: {
                         Text("Düzenle")
                             .font(.headline)
-                            .foregroundStyle(.appTeal)
+                            .foregroundStyle(.appOrange)
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(Color.appTeal.opacity(0.1))
+                            .background(Color.appOrange.opacity(0.1))
                             .cornerRadius(12)
                     }
                     

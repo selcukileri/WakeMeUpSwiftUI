@@ -176,7 +176,7 @@ struct AddLocationView: View {
                                         }
                                         .frame(maxWidth: .infinity)
                                         .padding(.vertical, 12)
-                                        .background(selectedAlarmType == type ? Color.blue : Color.clear)
+                                        .background(selectedAlarmType == type ? Color.appTeal : Color.clear)
                                         .foregroundStyle(selectedAlarmType == type ? .white : .primary)
                                         .cornerRadius(8)
                                         .overlay(

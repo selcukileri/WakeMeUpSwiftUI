@@ -17,7 +17,7 @@ struct OnboardingView: View {
                 
                 OnboardingPageView(
                     icon: "bell.badge.fill",
-                    iconColor: .blue,
+                    iconColor: .appTeal,
                     title: "Wake Me Up'a Hoş Geldiniz",
                     description: "Toplu taşımada uyurken durağınızı kaçırmayın. Hedefinize yaklaştığınızda sizi uyandırır!",
                     showButton: false
@@ -110,7 +110,7 @@ struct OnboardingPageView: View {
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(Color.blue)
+                        .background(Color.appTeal)
                         .cornerRadius(12)
                 }
                 .padding(.horizontal, 40)

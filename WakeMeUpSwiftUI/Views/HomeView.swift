@@ -82,9 +82,9 @@ struct LocationRow: View {
     
     var body: some View {
         HStack {
-            Image(systemName: "mappin.circle.fill")
+            Image(systemName: "location.circle.fill")
                 .font(.title2)
-                .foregroundStyle(.blue)
+                .foregroundStyle(.appTeal)
             
             VStack(alignment: .leading, spacing: 4) {
                 Text(location.name)
@@ -108,8 +108,8 @@ struct LocationRow: View {
                     .fontWeight(.semibold)
                     .padding(.horizontal, 8)
                     .padding(.vertical, 4)
-                    .background(Color.blue.opacity(0.1))
-                    .foregroundStyle(.blue)
+                    .background(Color.appTeal.opacity(0.1))
+                    .foregroundStyle(.appTeal)
                     .cornerRadius(6)
                 
                 Text(location.alarmType.rawValue)

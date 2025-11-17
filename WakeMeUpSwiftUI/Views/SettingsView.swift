@@ -41,7 +41,7 @@ struct SettingsView: View {
                     PermissionRow(
                         icon: "bell.fill",
                         title: "Bildirim İzni",
-                        isGranted: true,
+                        isGranted: notificationManager.isAuthorized,
                         color: .red
                     )
                 } header: {

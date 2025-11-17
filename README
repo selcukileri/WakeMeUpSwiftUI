@@ -1,0 +1,17 @@
+# Wake Me Up 🔔
+
+Location-based alarm app for public transportation users.
+
+## Features
+- 📍 Location-based alarms
+- 🔔 Custom alarm sounds & vibration
+- ⏰ Snooze feature
+- ⭐ Favorites
+- 🎨 Modern SwiftUI design
+
+## Tech Stack
+- SwiftUI
+- SwiftData
+- MapKit
+- Core Location
+- AVFoundation

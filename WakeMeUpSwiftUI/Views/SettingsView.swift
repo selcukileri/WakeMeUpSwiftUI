@@ -82,12 +82,12 @@ struct SettingsView: View {
                             .foregroundStyle(.gray)
                         Text("İletişim ve Önerileriniz İçin")
                         Spacer()
-                        Text("wakemeup.contact@gmail.com")
+                        Text("hello.wakemeupapp@gmail.com")
                             .foregroundStyle(.secondary)
                             .font(.caption)
                     }
                     .onTapGesture {
-                        if let url = URL(string: "mailto:wakemeup.contact@gmail.com") {
+                        if let url = URL(string: "mailto:hello.wakemeupapp@gmail.com") {
                             UIApplication.shared.open(url)
                         }
                     }
@@ -138,7 +138,7 @@ struct SettingsView: View {
                 Alarm aktifken arka planda konumunuzu takip ederiz, böylece uyurken bile sizi uyandırabiliriz. Alarm durdurulduğunda arka plan takibi de durur.
 
                 **İletişim:**
-                Gizlilik politikası ile ilgili sorularınız için: support@wakemeup.app
+                Gizlilik politikası ile ilgili sorularınız için: hello.wakemeupapp@gmail.com
                 """)
                 .font(.body)
             }
@@ -176,7 +176,7 @@ struct SettingsView: View {
                 - Kritik yolculuklarda telefonunuzun yerleşik alarmını da kurun
                 
                 **İletişim:**
-                Sorularınız için: support@wakemeup.app
+                Sorularınız için: hello.wakemeupapp@gmail.com
                 """)
                 .font(.body)
             }

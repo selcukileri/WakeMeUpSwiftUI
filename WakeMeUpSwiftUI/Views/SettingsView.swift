@@ -19,7 +19,7 @@ struct SettingsView: View {
                     HStack {
                         Image(systemName: "bell.badge.fill")
                             .foregroundStyle(.blue)
-                        Text("Wake Me Up")
+                        Text("Beni Uyandır")
                             .font(.headline)
                         Spacer()
                         Text("v1.0")
@@ -119,7 +119,7 @@ struct SettingsView: View {
                     .foregroundStyle(.secondary)
                 
                 Text("""
-                Wake Me Up uygulaması, konumunuzu yalnızca alarm çalması için kullanır.
+                Beni Uyandır uygulaması, konumunuzu yalnızca alarm çalması için kullanır.
 
                 **Toplanan Veriler:**
                 - Konum bilgisi (sadece cihazda saklanır)
@@ -160,7 +160,7 @@ struct SettingsView: View {
                     .foregroundStyle(.secondary)
                 
                 Text("""
-                Wake Me Up uygulamasını kullanarak aşağıdaki koşulları kabul etmiş olursunuz.
+                Beni Uyandır uygulamasını kullanarak aşağıdaki koşulları kabul etmiş olursunuz.
                 
                 **Kullanım:**
                 - Uygulama "olduğu gibi" sunulmaktadır

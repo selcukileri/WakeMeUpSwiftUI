@@ -18,7 +18,7 @@ struct OnboardingView: View {
                 OnboardingPageView(
                     icon: "bell.badge.fill",
                     iconColor: .appOrange,
-                    title: "Wake Me Up'a Hoş Geldiniz",
+                    title: "Beni Uyandır'a Hoş Geldiniz",
                     description: "Toplu taşımada uyurken durağınızı kaçırmayın. Hedefinize yaklaştığınızda sizi uyandırır!",
                     showButton: false
                 )

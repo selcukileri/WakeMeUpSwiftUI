@@ -11,6 +11,7 @@ import SwiftData
 struct ContentView: View {
     @State private var showingAddLocation = false
     @State private var selectedTab = 0
+    @State private var notificationManager = NotificationManager()
     
     var body: some View {
         ZStack {
@@ -34,6 +35,9 @@ struct ContentView: View {
                     .tag(2)
             }
             .tint(.appOrange)
+            .onAppear {
+                notificationManager.requestPermission()
+            }
         }
     }
 }

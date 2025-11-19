@@ -23,7 +23,7 @@ struct HomeView: View {
                         locationsList
                     }
                 }
-                .navigationTitle("Wake Me Up")
+                .navigationTitle("Konumlar")
                 
                 VStack {
                     Spacer()

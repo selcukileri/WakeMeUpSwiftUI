@@ -271,7 +271,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WakeMeUpSwiftUI/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Wake Me Up";
+				INFOPLIST_KEY_CFBundleDisplayName = "Beni Uyandır";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Background location access is required to trigger alarms even when the app is not active";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to trigger alarms when you approach your destination";
@@ -309,7 +309,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WakeMeUpSwiftUI/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Wake Me Up";
+				INFOPLIST_KEY_CFBundleDisplayName = "Beni Uyandır";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Background location access is required to trigger alarms even when the app is not active";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to trigger alarms when you approach your destination";

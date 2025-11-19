@@ -28,20 +28,32 @@ struct HomeView: View {
                 VStack {
                     Spacer()
                     HStack {
-                        Spacer()
-                        Button(action: { showingAddLocation = true }) {
-                            Image(systemName: "plus")
-                                .font(.title2)
-                                .fontWeight(.semibold)
-                                .foregroundColor(.white)
-                                .frame(width: 56, height: 56)
-                                .background(Color.appOrange)
-                                .clipShape(Circle())
-                                .shadow(color: .black.opacity(0.2), radius: 5)
+                        if !locations.isEmpty {
+                            Spacer()
                         }
-                        .padding(.trailing, 20)
-                        .padding(.bottom, 90)
+                        
+                        Button(action: { showingAddLocation = true }) {
+                            HStack(spacing: 8) {
+                                Image(systemName: "plus.circle.fill")
+                                    .font(.title3)
+                                Text("Konum Ekle")
+                                    .font(.headline)
+                            }
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 24)
+                            .padding(.vertical, 16)
+                            .background(Color.appOrange)
+                            .cornerRadius(30)
+                            .shadow(color: .black.opacity(0.2), radius: 5)
+                        }
+                        
+                        if !locations.isEmpty {
+                            Spacer()
+                                .frame(width: 20)
+                        }
                     }
+                    .frame(maxWidth: .infinity)
+                    .padding(.bottom, locations.isEmpty ? 100 : 90)
                 }
             }
             .sheet(isPresented: $showingAddLocation) {
